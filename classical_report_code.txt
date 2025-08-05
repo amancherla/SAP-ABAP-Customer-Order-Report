@@ -1,0 +1,14 @@
+
+REPORT zcustomer_order_classical.
+
+TABLES: vbak, vbap.
+
+SELECT-OPTIONS: s_vbeln FOR vbak-vbeln.
+
+START-OF-SELECTION.
+  WRITE: / 'Sales Document', 20 'Customer', 40 'Status'.
+  ULINE.
+  SELECT vbeln, kunnr, fkart FROM vbak INTO (vbak-vbeln, vbak-kunnr, vbak-fkart)
+    WHERE vbeln IN s_vbeln.
+    WRITE: / vbak-vbeln, 20 vbak-kunnr, 40 vbak-fkart.
+  ENDSELECT.

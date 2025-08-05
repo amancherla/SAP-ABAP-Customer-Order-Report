@@ -1,0 +1,30 @@
+
+REPORT zcustomer_order_alv.
+
+TABLES: vbak.
+
+TYPE-POOLS: slis.
+DATA: it_vbak TYPE TABLE OF vbak,
+      wa_vbak TYPE vbak,
+      it_fieldcat TYPE slis_t_fieldcat_alv,
+      wa_fieldcat TYPE slis_fieldcat_alv.
+
+SELECT vbeln kunnr fkart FROM vbak INTO TABLE it_vbak UP TO 100 ROWS.
+
+wa_fieldcat-fieldname = 'VBELN'.
+wa_fieldcat-seltext_m = 'Sales Document'.
+APPEND wa_fieldcat TO it_fieldcat.
+
+wa_fieldcat-fieldname = 'KUNNR'.
+wa_fieldcat-seltext_m = 'Customer'.
+APPEND wa_fieldcat TO it_fieldcat.
+
+wa_fieldcat-fieldname = 'FKART'.
+wa_fieldcat-seltext_m = 'Billing Type'.
+APPEND wa_fieldcat TO it_fieldcat.
+
+CALL FUNCTION 'REUSE_ALV_GRID_DISPLAY'
+  EXPORTING
+    it_fieldcat = it_fieldcat
+  TABLES
+    t_outtab = it_vbak.
